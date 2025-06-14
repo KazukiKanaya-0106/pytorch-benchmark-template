@@ -10,7 +10,7 @@ meta:
 # データセットの設定
 data:
   dataset: CIFAR10
-  download: data/downloads/
+  downloads: data/downloads/
   num_classes: 10
 
   data_frac: 1.0  # 全体から使用する割合
@@ -18,24 +18,19 @@ data:
     train: 0.7
     validation: 0.3
 
-  augmentation:
-    random_flip: false
-    normalize: false
-    random_crop: false
-
   loader:
-    batch_size: 64
+    batch_size: 256
     num_workers: 1
-    shuffle: true
+    shuffle_train: true
 
 # 訓練の設定
 training:
   epochs: 50
-  model: resnet18
+  model: mlp_layer7
   loss: cross_entropy
   optimizer: adam
-  scheduler: none
-  early_stopping: none
+  scheduler: null
+  early_stopping: null
 
 # 検証の設定
 evaluation:
@@ -46,15 +41,16 @@ evaluation:
 
 # ログの設定
 logging:
-  artifacts:
-    log_dir: artifacts/
+  root_dir: artifacts/
+  experiment_assets:
+    dir: experiment_assets/
 
   tensorboard:
-    log_dir: tensorboard/
+    dir: tensorboard/
 
   mlflow:
     project: universal-benchmark
-    log_dir: mlflow/
+    dir: mlflow/
 
 # 各種コンポーネントの設定
 model:
@@ -62,6 +58,9 @@ model:
     in_channels: 3
     output_dim: 10
     pretrained: false
+  mlp_layer7:
+    input_dim: 3072
+    output_dim: 10
 
 loss:
   cross_entropy:

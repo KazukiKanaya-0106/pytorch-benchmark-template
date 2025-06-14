@@ -14,12 +14,14 @@ class DataLoaderBuilder:
     def build_dataloader(
         self, config: dict
     ) -> tuple[DataLoader, DataLoader, DataLoader]:
-        batch_size = config["data"]["loader"]["batch_size"]
-        num_workers = config["data"]["loader"]["num_workers"]
+        loader_config: dict = config["data"]["loader"]
+        batch_size: int = loader_config["batch_size"]
+        num_workers: int = loader_config["num_workers"]
+        shuffle: bool = loader_config["shuffle_train"]
         train_loader = DataLoader(
             self.train_dataset,
             batch_size=batch_size,
-            shuffle=True,
+            shuffle=shuffle,
             num_workers=num_workers,
         )
         valid_loader = DataLoader(

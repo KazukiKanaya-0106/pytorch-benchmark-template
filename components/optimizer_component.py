@@ -14,14 +14,14 @@ class OptimizerComponent:
             case "adam":
                 optimizer = optim.Adam(
                     model.parameters(),
-                    lr=optimizer_config["learning_rate"],
-                    weight_decay=optimizer_config["weight"],
+                    lr=float(optimizer_config["learning_rate"]),
+                    weight_decay=float(optimizer_config["weight_decay"]),
                 )
             case "sgd":
                 optimizer = optim.SGD(
                     model.parameters(),
-                    lr=optimizer_config["learning_rate"],
-                    weight_decay=optimizer_config["weight"],
+                    lr=float(optimizer_config["learning_rate"]),
+                    weight_decay=float(optimizer_config["weight_decay"]),
                 )
             case _:
                 raise ValueError(f"Unsupported optimizer: {optimizer_name}")

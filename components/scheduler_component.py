@@ -8,6 +8,8 @@ class SchedulerComponent:
 
     def build_scheduler(self, config: dict, optimizer: Optimizer):
         scheduler_name: str = config["training"]["scheduler"]
+        if scheduler_name is None:
+            return None
         scheduler_config: dict = config["scheduler"][scheduler_name]
 
         match scheduler_name:
@@ -19,7 +21,7 @@ class SchedulerComponent:
                     last_epoch=-1,
                     verbose=True,
                 )
-            case None | "none":
+            case None:
                 scheduler = None
             case _:
                 raise ValueError(f"Unsupported scheduler_name: {scheduler_name}")

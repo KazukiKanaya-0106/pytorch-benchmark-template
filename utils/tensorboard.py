@@ -3,10 +3,12 @@ from torch.utils.tensorboard import SummaryWriter
 
 class TensorBoard:
     def __init__(self, config: dict):
-        tensorboard_root_dir = config["logging"]["tensorboard"]["log_dir"]
+        tensorboard_dir: str = (
+            f'{config["logging"]["root_dir"]}/{config["logging"]["tensorboard"]["dir"]}'
+        )
         key = config["meta"]["key"]
 
-        log_dir = f"{tensorboard_root_dir}/{key}"
+        log_dir = f"{tensorboard_dir}/{key}"
         self.writer = SummaryWriter(log_dir=log_dir)
 
     def log_epoch(self, train_log: dict, valid_log: dict, epoch: int):

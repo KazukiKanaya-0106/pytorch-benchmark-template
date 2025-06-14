@@ -12,7 +12,7 @@ class DatasetBuilder:
         data_config: dict = config["data"]
         dataset_name: str = data_config["dataset"]
 
-        train_dataset, valid_dataset, test_dataset = None
+        train_dataset, valid_dataset, test_dataset = None, None, None
 
         match dataset_name:
             case "CIFAR10":

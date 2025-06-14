@@ -1,0 +1,10 @@
+training:
+  epochs: 2
+  model: resnet18
+  loss: cross_entropy
+  optimizer: adam
+  scheduler: null
+  early_stopping: null
+
+evaluation:
+  metrics: [accuracy, f1]

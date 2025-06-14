@@ -2,6 +2,7 @@ from core import Config
 from components import ComponentBuilder
 from data import DataLoaderBuilder
 from scripts import EpochRunner, TrainingLooper
+from utils import TorchUtils
 
 import argparse
 
@@ -19,6 +20,10 @@ def main():
         override_path=args.config,
         key=args.key,
     ).get()
+
+    seed = config["meta"]["seed"]
+    if seed:
+        TorchUtils.set_global_seed(seed)
 
     component_builder = ComponentBuilder(config)
     dataloader_builder = DataLoaderBuilder(config)

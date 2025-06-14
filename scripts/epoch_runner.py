@@ -32,7 +32,6 @@ class EpochRunner:
     def run_epoch(self) -> dict:
 
         current_lr = self.optimizer.param_groups[0]["lr"]
-        print(f"learning_rate: {current_lr}")
 
         if self.mode == "training":
             self.model.train()
@@ -84,8 +83,7 @@ class EpochRunner:
 
                 postfix = {type(self.loss_fn).__name__: loss.item()}
                 metric_values = {
-                    type(metric).__name__: metric.compute().item()
-                    for metric in self.metrics
+                    metric.__name__: metric.compute().item() for metric in self.metrics
                 }
                 postfix.update(metric_values)
                 loop.set_postfix(postfix)

@@ -1,4 +1,4 @@
-import torch
+import os
 from torchvision import datasets, transforms
 from torch.utils.data import random_split, Subset, Dataset
 
@@ -6,16 +6,16 @@ from torch.utils.data import random_split, Subset, Dataset
 class CIFAR10:
     def __init__(self, config: dict):
         data_config: dict = config["data"]
-        input_dir: str = data_config["downloads"]
-        seed: int = config["meta"]["seed"]
+        download_dir: str = data_config["downloads"]
 
         transform = transforms.ToTensor()
 
+        os.makedirs(download_dir, exist_ok=True)
         train_valid_data: Dataset = datasets.CIFAR10(
-            root=input_dir, train=True, download=True, transform=transform
+            root=download_dir, train=True, download=True, transform=transform
         )
         test_data: Dataset = datasets.CIFAR10(
-            root=input_dir, train=False, download=True, transform=transform
+            root=download_dir, train=False, download=True, transform=transform
         )
 
         # 使用割合の制限
@@ -37,7 +37,6 @@ class CIFAR10:
         self.train_dataset, self.valid_dataset = random_split(
             dataset,
             [train_size, valid_size],
-            generator=torch.Generator().manual_seed(seed),
         )
 
         self.test_dataset: Dataset = test_data

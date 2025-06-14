@@ -1,3 +1,4 @@
+import torch
 from torchmetrics import Metric
 from torchmetrics.classification import (
     F1Score,
@@ -13,6 +14,7 @@ class MetricsComponent:
         self.metrics: list[Metric] = self.build_metrics(config)
 
     def build_metrics(self, config: dict) -> list[Metric]:
+        device = torch.device(config["meta"]["device"])
         evaluation_config: str = config["evaluation"]
         num_classes: int = config["data"]["num_classes"]
         metric_list: list[str] = evaluation_config["metrics"]
@@ -39,8 +41,8 @@ class MetricsComponent:
                     metric = Accuracy(task=task, num_classes=num_classes)
                 case _:
                     raise ValueError(f"Unsupported metric: {metric_name}")
-
-            metrics.append(metric)
+            metric.__name__ = metric_name
+            metrics.append(metric.to(device))
 
         return metrics
 

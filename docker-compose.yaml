@@ -1,0 +1,14 @@
+services:
+  universal-benchmark:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: universal-benchmark-container
+    volumes:
+      - .:/workspace
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    stdin_open: true
+    tty: true

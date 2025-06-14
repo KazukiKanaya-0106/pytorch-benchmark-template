@@ -1,0 +1,85 @@
+# メタデータの設定
+meta:
+  project: universal-benchmark
+  seed: 42
+  device: cuda
+  description: "MLP benchmark on CIFAR10"
+  timestamp: ""  # 自動設定（ConfigComponent側で挿入）
+  key: ""         # 自動設定（ConfigComponent側で挿入）
+
+# データセットの設定
+data:
+  dataset: CIFAR10
+  download: data/downloads/
+  num_classes: 10
+
+  data_frac: 1.0  # 全体から使用する割合
+  split:
+    train: 0.7
+    validation: 0.3
+
+  augmentation:
+    random_flip: false
+    normalize: false
+    random_crop: false
+
+  loader:
+    batch_size: 64
+    num_workers: 1
+    shuffle: true
+
+# 訓練の設定
+training:
+  epochs: 50
+  model: resnet18
+  loss: cross_entropy
+  optimizer: adam
+  scheduler: none
+  early_stopping: none
+
+# 検証の設定
+evaluation:
+  metrics: [accuracy, f1, iou, precision, recall]
+  task: multiclass
+  average: macro
+  save_best_metric: accuracy
+
+# ログの設定
+logging:
+  artifacts:
+    log_dir: artifacts/
+
+  tensorboard:
+    log_dir: tensorboard/
+
+  mlflow:
+    project: universal-benchmark
+    log_dir: mlflow/
+
+# 各種コンポーネントの設定
+model:
+  resnet18:
+    in_channels: 3
+    output_dim: 10
+    pretrained: false
+
+loss:
+  cross_entropy:
+    reduction: mean
+
+optimizer:
+  adam:
+    learning_rate: 1e-5
+    weight_decay: 0.0
+  sgd:
+    learning_rate: 1e-5
+    weight_decay: 0.0
+
+scheduler:
+  cosine_annealing:
+    T_max: 50
+    eta_min: 1e-5
+
+early_stopping:
+  monitor: accuracy
+  patience: 5

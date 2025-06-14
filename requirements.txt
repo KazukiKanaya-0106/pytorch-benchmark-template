@@ -1,0 +1,17 @@
+# Machine Learning & Data Processing
+scikit-learn
+numpy
+pandas
+matplotlib
+omegaconf
+torchmetrics
+tensorboard
+
+# Image Processing
+opencv-python-headless
+albumentations
+
+# Other
+black
+tqdm
+pre-commit

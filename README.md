@@ -196,7 +196,6 @@ python main.py -c configs/example.yml -k demo
 
 * 新しいモデルの追加（`models/`）
 * データセットや前処理の追加（`data/`）
-* 評価指標の拡張（`trainer/`, `utils/`）
 * 損失関数・ロガーの変更など
 
 独自のベンチマークフレームワークを構築する際の出発点として活用してください。

@@ -1,7 +1,10 @@
+import warnings
+
+warnings.filterwarnings("ignore")
 from core import Config
 from components import ComponentBuilder
 from data import DataLoaderBuilder
-from scripts import EpochRunner, TrainingLooper
+from scripts import EpochRunner, ExperimentRunner
 from utils import TorchUtils
 
 import argparse
@@ -44,9 +47,9 @@ def main():
         config=config,
         component_builder=component_builder,
         data_loader=test_loader,
-        mode="validation",
+        mode="test",
     )
-    training_looper = TrainingLooper(
+    experiment_runner = ExperimentRunner(
         config=config,
         train_runner=train_runner,
         valid_runner=valid_runner,
@@ -54,7 +57,7 @@ def main():
         component_builder=component_builder,
     )
 
-    training_looper.run()
+    experiment_runner.run()
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # メタデータの設定
 meta:
-  project: universal-benchmark
+  project: pytorch-benchmark-template
   seed: 42
   device: cuda
   description: "MLP benchmark on CIFAR10"
@@ -49,7 +49,7 @@ logging:
     dir: tensorboard/
 
   mlflow:
-    project: universal-benchmark
+    project: pytorch-benchmark-template
     dir: mlflow/
 
 # 各種コンポーネントの設定

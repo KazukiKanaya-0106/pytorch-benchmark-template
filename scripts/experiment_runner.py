@@ -4,10 +4,10 @@ from torch.nn import Module
 from torch.optim import Optimizer
 from components import ComponentBuilder
 from .epoch_runner import EpochRunner
-from utils import TensorBoard, DataStructureUtils, FileUtils
+from utils import TensorBoard, DataStructureUtils, FileUtils, MLflow
 
 
-class TrainingLooper:
+class ExperimentRunner:
     def __init__(
         self,
         config: dict,
@@ -29,8 +29,10 @@ class TrainingLooper:
         self.epochs = config["training"]["epochs"]
         self.save_best_metric = config["evaluation"]["save_best_metric"]
         self.tensorboard = TensorBoard(config)
+        self.mlflow = MLflow(config)
 
     def run(self) -> None:
+        self.mlflow.start_run()
         output_file_dir = f"{self.experiment_assets_dir}/{self.key}"
         os.makedirs(output_file_dir, exist_ok=True)
         max_score = 0
@@ -49,18 +51,29 @@ class TrainingLooper:
                 best_epoch = epoch
 
                 torch.save(
-                    self.model.state_dict(),
-                    f"{output_file_dir}/best_weight.pth",
+                    {
+                        "model_state_dict": self.model.state_dict(),
+                        "optimizer_state_dict": self.optimizer.state_dict(),
+                        "epoch": best_epoch,
+                    },
+                    f"{output_file_dir}/best_checkpoint.pth",
                 )
                 print("\nUpdate best weight!\n")
 
-            self.tensorboard.log_epoch(
-                train_log=train_log,
-                valid_log=valid_log,
-                epoch=epoch,
-            )
+            train_log_prefixed = DataStructureUtils.add_prefix(train_log, "train")
+            valid_log_prefixed = DataStructureUtils.add_prefix(valid_log, "valid")
+
+            self.tensorboard.log_metrics(metrics=train_log_prefixed, step=epoch)
+            self.tensorboard.log_metrics(metrics=valid_log_prefixed, step=epoch)
+
+            self.mlflow.log_metrics(metrics=train_log_prefixed, step=epoch)
+            self.mlflow.log_metrics(metrics=valid_log_prefixed, step=epoch)
 
         self.tensorboard.close()
+
+        best_weight_path: str = f"{output_file_dir}/best_checkpoint.pth"
+        checkpoint = torch.load(best_weight_path)
+        self.model.load_state_dict(checkpoint["model_state_dict"])
 
         test_log: dict = self.test_runner.run_epoch()
         test_log["best_epoch"] = best_epoch
@@ -74,6 +87,13 @@ class TrainingLooper:
         FileUtils.save_dict_to_yaml(
             dictionary=config, path=f"{output_file_dir}/config_backup.yml"
         )
+
+        test_log_prefixed = DataStructureUtils.add_prefix(test_log, "test")
+        self.mlflow.log_metrics(metrics=test_log_prefixed)
+        self.mlflow.log_artifact(f"{output_file_dir}/best_checkpoint.pth")
+        self.mlflow.log_artifact(f"{output_file_dir}/test_log.yml")
+        self.mlflow.log_artifact(f"{output_file_dir}/config_backup.yml")
+        self.mlflow.end_run()
 
         for key, value in test_log.items():
             if isinstance(value, float):

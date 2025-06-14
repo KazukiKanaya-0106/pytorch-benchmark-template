@@ -28,7 +28,7 @@ class CIFAR10:
         valid_ratio: float = data_config["split"]["validation"]
         assert (
             abs(train_ratio + valid_ratio - 1.0) < 1e-5
-        ), "train + validation の合計は 1.0 にしてください。"
+        ), "Please ensure that the sum of 'train' and 'validation' is 1.0."
 
         # train/val のみ分割、test は test_data をそのまま使う
         train_size: int = int(total_size * train_ratio / (train_ratio + valid_ratio))

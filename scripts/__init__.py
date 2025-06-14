@@ -1,4 +1,4 @@
 from .epoch_runner import EpochRunner
-from .training_looper import TrainingLooper
+from .experiment_runner import ExperimentRunner
 
-__all__ = [EpochRunner, TrainingLooper]
+__all__ = [EpochRunner, ExperimentRunner]

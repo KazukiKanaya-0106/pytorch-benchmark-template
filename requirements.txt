@@ -1,17 +1,22 @@
-# Machine Learning & Data Processing
-scikit-learn
-numpy
-pandas
-matplotlib
-omegaconf
-torchmetrics
-tensorboard
+# --- Core ML / Torch (固定：2.1.0 系列) ---
+torch==2.1.0
+torchvision==0.16.0
+torchmetrics==1.2.1
 
-# Image Processing
-opencv-python-headless
-albumentations
+# --- Experiment Tracking ---
+mlflow==2.9.2
+tensorboard==2.14.0
 
-# Other
-black
-tqdm
-pre-commit
+# --- Data Handling ---
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.3.2
+matplotlib==3.7.5
+
+# --- Image Processing ---
+opencv-python-headless==4.9.0.80
+albumentations==1.4.7
+
+# --- Dev / Utility ---
+tqdm==4.66.4
+black==24.4.2

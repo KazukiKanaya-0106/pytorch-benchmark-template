@@ -22,14 +22,17 @@ class DataStructureUtils:
         return merged
 
     @staticmethod
-    def convert_to_builtin_types(obj: Any) -> int | float | str | dict | list:
+    def convert_to_builtin_types(obj: Any) -> Any:
         """
-        Python独自の組み込み型にデータを変換する関数
+        Pythonの組み込み型に再帰的に変換する関数。
         """
         if isinstance(obj, torch.Tensor):
             return obj.item()
         elif isinstance(obj, np.generic):
-            return round(obj.item(), 5) if isinstance(obj.item(), float) else obj.item()
+            val = obj.item()
+            return round(val, 5) if isinstance(val, float) else val
+        elif isinstance(obj, float):
+            return round(obj, 5)
         elif isinstance(obj, dict):
             return {
                 k: DataStructureUtils.convert_to_builtin_types(v)
@@ -37,4 +40,10 @@ class DataStructureUtils:
             }
         elif isinstance(obj, list):
             return [DataStructureUtils.convert_to_builtin_types(v) for v in obj]
+        elif isinstance(obj, tuple):
+            return tuple(DataStructureUtils.convert_to_builtin_types(v) for v in obj)
         return obj
+
+    @staticmethod
+    def add_prefix(d: dict, prefix: str) -> dict:
+        return {f"{prefix}_{k}": v for k, v in d.items()}

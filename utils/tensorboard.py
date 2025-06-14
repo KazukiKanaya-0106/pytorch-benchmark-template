@@ -1,3 +1,4 @@
+from .data_structure_utils import DataStructureUtils
 from torch.utils.tensorboard import SummaryWriter
 
 
@@ -11,12 +12,10 @@ class TensorBoard:
         log_dir = f"{tensorboard_dir}/{key}"
         self.writer = SummaryWriter(log_dir=log_dir)
 
-    def log_epoch(self, train_log: dict, valid_log: dict, epoch: int):
-
-        for key, value in train_log.items():
-            self.writer.add_scalar(f"Train/{key}", value, epoch)
-        for key, value in valid_log.items():
-            self.writer.add_scalar(f"Validation/{key}", value, epoch)
+    def log_metrics(self, metrics: dict, step: int | None = None):
+        metrics = DataStructureUtils.convert_to_builtin_types(metrics)
+        for key, value in metrics.items():
+            self.writer.add_scalar(f"/{key}", value, step)
 
     def close(self) -> None:
         self.writer.close()

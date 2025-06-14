@@ -98,12 +98,13 @@ class EpochRunner:
                     self.scheduler.step()
 
             result = {
-                "average_loss": avg_loss,
+                "average_loss": float(avg_loss),
                 **metric_values,
             }
 
+            # training 固有のログ（gradient, learning rate）
             if self.mode == "training":
-                result["average_grad"] = avg_grad
-                result["learning_rate"] = current_lr
+                result["average_grad"] = float(avg_grad)
+                result["learning_rate"] = float(current_lr)
 
             return result

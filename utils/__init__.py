@@ -4,4 +4,4 @@ from .torch_utils import TorchUtils
 from .tensorboard import TensorBoard
 from .mlflow import MLflow
 
-__all__ = [DataStructureUtils, FileUtils, TorchUtils, TensorBoard, MLflow]
+__all__ = ["DataStructureUtils", "FileUtils", "TorchUtils", "TensorBoard", "MLflow"]

@@ -28,7 +28,7 @@ training:
   weight: null
   epochs: 50
   model: mlp_layer7
-  loss: cross_entropy
+  loss: cross_entropy_loss
   optimizer: adam
   scheduler: null
   early_stopping: null
@@ -72,9 +72,13 @@ model:
 
 
 loss:
-  cross_entropy:
+  cross_entropy_loss:
     reduction: mean
-  binary_cross_entropy:
+  binary_cross_entropy_loss:
+    reduction: mean
+  binary_focal_loss:
+    alpha: [0.75, 0.25]
+    gamma: 2.0
     reduction: mean
 
 optimizer:

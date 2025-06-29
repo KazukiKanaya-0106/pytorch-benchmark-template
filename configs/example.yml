@@ -1,7 +1,7 @@
 training:
   epochs: 2
   model: mlp_layer7
-  loss: cross_entropy
+  loss: cross_entropy_loss
   optimizer: adam
   scheduler: null
   early_stopping: null

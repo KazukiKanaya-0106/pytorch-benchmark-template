@@ -6,13 +6,11 @@ from torch.utils.data import Dataset
 from typing import Callable
 
 
-# ************************************************************
 class DeepGlobeRoadExtractionDataset(Dataset):
     """
     衛星画像と道路マスクのペアを読み込むカスタムデータセット
     """
 
-    # ============================================================
     def __init__(
         self, data_frame: pd.DataFrame, transform: Callable | None = None
     ) -> None:
@@ -27,9 +25,6 @@ class DeepGlobeRoadExtractionDataset(Dataset):
         self.data_frame = data_frame
         self.transform = transform
 
-    # ============================================================
-
-    # ============================================================
     def __len__(self) -> int:
         """
         データセットのサイズを返す
@@ -40,9 +35,6 @@ class DeepGlobeRoadExtractionDataset(Dataset):
 
         return len(self.data_frame)
 
-    # ============================================================
-
-    # ============================================================
     def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
         """
         指定されたインデックスに対応する衛星画像と道路マスクを返す
@@ -81,8 +73,3 @@ class DeepGlobeRoadExtractionDataset(Dataset):
         mask_img = mask_img.float() / 255  # 0 or 1
 
         return (sat_img, mask_img)
-
-    # ============================================================
-
-
-# ************************************************************

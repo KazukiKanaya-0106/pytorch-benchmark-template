@@ -1,7 +1,7 @@
 training:
   epochs: 2
   model: deeplabv3plus_backbone
-  loss: binary_cross_entropy
+  loss: binary_cross_entropy_loss
   optimizer: adam
   scheduler: null
   early_stopping: null

@@ -7,10 +7,8 @@ from torch.utils.data import Dataset
 from utils import TorchUtils
 
 
-# ************************************************************
 class Predictor:
 
-    # ============================================================
     def __init__(
         self, model: nn.Module, predict_dataset: Dataset, output_file_dir: str
     ):
@@ -18,9 +16,6 @@ class Predictor:
         self.predict_dataset = predict_dataset
         self.output_file_dir = output_file_dir
 
-    # ============================================================
-
-    # ============================================================
     def predict(self, num_predicts: int, device: torch.device, skip_plot: bool = False):
         TorchUtils.move_to_device(self.model, device)
         self.model.eval()
@@ -45,9 +40,6 @@ class Predictor:
                 ground_truth_mask=mask_img,
             )
 
-    # ============================================================
-
-    # ============================================================
     def _visualizer(self, id: int, skip_plot: bool, **images) -> None:
         """
         衛星画像、道路マスク、予測マスクを可視化し保存する
@@ -83,8 +75,3 @@ class Predictor:
         # 描画をスキップするかを判断
         if not skip_plot:
             plt.show()
-
-    # ============================================================
-
-
-# ************************************************************

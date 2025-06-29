@@ -1,4 +1,5 @@
 import torch.nn as nn
+from losses import BinaryFocalLoss
 
 
 class LossComponent:
@@ -10,12 +11,18 @@ class LossComponent:
 
     def build_loss(self, loss_name: str, loss_config: dict) -> nn.Module:
         match loss_name:
-            case "cross_entropy":
+            case "cross_entropy_loss":
                 return nn.CrossEntropyLoss(
                     reduction=loss_config["reduction"],
                 )
-            case "binary_cross_entropy":
+            case "binary_cross_entropy_loss":
                 return nn.BCELoss(
+                    reduction=loss_config["reduction"],
+                )
+            case "binary_focal_loss":
+                return BinaryFocalLoss(
+                    alpha=loss_config["alpha"],
+                    gamma=loss_config["gamma"],
                     reduction=loss_config["reduction"],
                 )
             case _:

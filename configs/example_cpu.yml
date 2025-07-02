@@ -1,0 +1,30 @@
+meta:
+  device: cpu
+
+data:
+  dataset: CIFAR10
+  downloads: data/downloads/
+  num_classes: 10
+
+  fraction: 0.01  # 全体から使用する割合
+  split:
+    training: 0.7
+    validation: 0.3
+
+  loader:
+    batch_size: 256
+    num_workers: 0
+    shuffle_train: true
+
+training:
+  epochs: 2
+  model: mlp_layer7
+  loss: cross_entropy_loss
+  optimizer: adam
+  scheduler: null
+  early_stopping: null
+
+evaluation:
+  metrics: [accuracy, f1]
+  task: multiclass
+  average: macro

@@ -47,13 +47,6 @@ class ModelComponent:
                     input_dim=model_config["input_dim"],
                     output_dim=model_config["output_dim"],
                 )
-            case "deeplabv3plus_backbone":
-                model = smp.DeepLabV3Plus(
-                    encoder_name=model_config["encoder_name"],
-                    encoder_weights=model_config["encoder_weights"],
-                    classes=model_config["classes"],
-                    activation=model_config["activation"],
-                )
             case _:
                 raise ValueError(f"Unsupported model: {model_name}")
 

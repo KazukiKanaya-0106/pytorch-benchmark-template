@@ -1,5 +1,5 @@
 from io import BytesIO
-from typing import Any, Callable, Literal
+from typing import Any, Literal
 import torch
 from torch import nn, Tensor
 import random
@@ -127,7 +127,7 @@ class TorchUtils:
             raise TypeError(f"Unsupported batch type: {type(batch)}")
 
     @staticmethod
-    def resolve_forward_fn(dataset_name: str):
+    def resolve_forward_fn(dataset_name: str) -> callable:
         def forward_image(model, X):
             return model(X)
 

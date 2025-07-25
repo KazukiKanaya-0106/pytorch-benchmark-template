@@ -1,11 +1,10 @@
-from typing import Callable
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
 
 class Transforms:
     @staticmethod
-    def resnet_transform() -> Callable:
+    def resnet_transform() -> callable:
         return A.Compose(
             [
                 A.Resize(1024, 1024),

@@ -22,8 +22,8 @@ class GlueSST2Datasets:
 
         # 検証用データの分割（valid/test）
         valid_test = tokenized["validation"]
-        val_size = int(len(valid_test) * 0.5)
-        test_size = len(valid_test) - val_size
+        valid_size = int(len(valid_test) * data_config["split"]["valid"])
+        test_size = len(valid_test) - valid_size
 
         self._valid, self._test = random_split(valid_test, [val_size, test_size])
 

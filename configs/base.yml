@@ -125,6 +125,8 @@ dataset:
     num_classes: 2
 
     fraction: 1.0
+    split:
+      validation: 0.5  # test = 1 - validation
 
     loader:
       batch_size: 16

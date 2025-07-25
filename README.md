@@ -2,7 +2,7 @@
 # PyTorch Benchmark Template
 
 このリポジトリは、PyTorchを用いた深層学習モデルのベンチマーク実験を効率的に行うためのテンプレートです。
-実験設定をYAMLファイルで一元管理し、MLflowやTensorBoardによるロギングと可視化にも対応しています。
+CIFAR10やGLUE/SST2等のデータセットや、実験設定をYAMLファイルで一元管理し、MLflowやTensorBoardによるロギングと可視化にも対応しています。
 
 本テンプレートは、**独自のモデル・損失関数・評価指標などを柔軟に拡張可能な構成**となっており、研究開発における比較実験の土台として利用できます。
 
@@ -106,14 +106,9 @@ python main.py -c configs/example.yml -k demo
 ## 実験設定ファイルの例（YAML）
 
 ```yaml
-data:
-  dataset: CIFAR10
-  fraction: 1.0
-  split:
-    train: 0.7
-    validation: 0.3
-
 training:
+  dataset: cifar10
+  weight: null
   epochs: 50
   model: mlp_layer7
   loss: cross_entropy_loss

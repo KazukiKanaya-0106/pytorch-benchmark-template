@@ -1,8 +1,7 @@
 import argparse
 
 from core import GridSearchParameters
-from scripts.experiment import Experiment
-from scripts.grid_search_ import GridSearch
+from scripts import Experiment, GridSearch
 
 
 def main() -> None:

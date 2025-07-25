@@ -29,6 +29,7 @@ class ModelTrainer:
         save_best_monitor: str,
         monitor_task: Literal["min", "max"],
         best_weight_source: str | BytesIO,
+        forward_fn: callable = lambda model, X: model(X),
         tensorboard: TensorBoard | None = None,
         mlflow: MLflow | None = None,
     ) -> None:
@@ -40,6 +41,7 @@ class ModelTrainer:
             data_loader=train_loader,
             device=device,
             mode="training",
+            forward_fn=forward_fn,
         )
         self.valid_epoch: EpochTrainer = EpochTrainer(
             model=model,
@@ -49,6 +51,7 @@ class ModelTrainer:
             data_loader=valid_loader,
             device=device,
             mode="validation",
+            forward_fn=forward_fn,
         )
         self.test_epoch: EpochTrainer = EpochTrainer(
             model=model,
@@ -58,6 +61,7 @@ class ModelTrainer:
             data_loader=test_loader,
             device=device,
             mode="validation",
+            forward_fn=forward_fn,
         )
         self.model: Module = model.to(device)
         self.optimizer: Optimizer = optimizer

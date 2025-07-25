@@ -20,6 +20,7 @@ class EpochTrainer:
         device: torch.device,
         data_loader: DataLoader,
         mode: Literal["training", "validation"],
+        forward_fn: callable = lambda model, X: model(X),
     ) -> None:
         self.model: nn.Module = model
         self.loss_fn: nn.Module = loss_fn
@@ -28,6 +29,7 @@ class EpochTrainer:
         self.data_loader: DataLoader = data_loader
         self.mode: Literal["training", "validation"] = mode
         self.device = device
+        self.forward_fn = forward_fn
 
     def fit(self) -> dict:
 
@@ -62,7 +64,7 @@ class EpochTrainer:
                 X = TorchUtils.move_to_device(obj=X, device=self.device)
                 y = TorchUtils.move_to_device(obj=y, device=self.device)
 
-                outputs = self.model(X)
+                outputs = self.forward_fn(self.model, X)
                 loss = self.loss_fn(outputs, y)
 
                 if self.mode == "training":

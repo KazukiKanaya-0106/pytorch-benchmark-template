@@ -63,15 +63,22 @@ class Experiment:
         os.makedirs(path, exist_ok=True)
         return path
 
+    @property
+    def forward_fn(self) -> callable:
+        return TorchUtils.resolve_forward_fn(self.config["training"]["dataset"])
+
     def setup_seed(self) -> None:
         if self.seed:
             TorchUtils.set_global_seed(self.seed)
 
     def init_dataloaders(self) -> None:
-        datasets = DatasetComponent(self.config["data"], self.seed).datasets
+        c = self.config
+        datasets = DatasetComponent(
+            c["training"]["dataset"], c["dataset"][c["training"]["dataset"]], self.seed
+        ).datasets
         self.test_dataset = datasets[2]
         loaders = DataLoaderComponent(
-            loader_config=self.config["data"]["loader"],
+            loader_config=c["dataset"][c["training"]["dataset"]]["loader"],
             train_dataset=datasets[0],
             valid_dataset=datasets[1],
             test_dataset=datasets[2],
@@ -95,7 +102,7 @@ class Experiment:
 
         self.metrics = MetricsComponent(
             evaluation_config=c["evaluation"],
-            num_classes=c["data"]["num_classes"],
+            num_classes=c["dataset"][c["training"]["dataset"]]["num_classes"],
             device=self.device,
         ).metrics
 
@@ -152,6 +159,7 @@ class Experiment:
             save_best_monitor=c["evaluation"]["save_best_monitor"],
             monitor_task=c["evaluation"]["monitor_task"],
             best_weight_source=os.path.join(self.output_dir, "best_weight.pth"),
+            forward_fn=self.forward_fn,
             tensorboard=tensorboard,
             mlflow=mlflow,
         )
@@ -170,8 +178,10 @@ class Experiment:
                 mlflow.log_artifact(os.path.join(self.output_dir, fname))
 
     def predict(self) -> None:
-        match self.config["data"]["dataset"]:
-            case "CIFAR10":
+        match self.config["training"]["dataset"]:
+            case "cifar10":
+                pass
+            case "sst2":
                 pass
             case _:
                 pass

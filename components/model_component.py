@@ -1,6 +1,7 @@
 from io import BytesIO
 import torch
 from torch.nn import Module
+from transformers import BertForSequenceClassification
 from models import Resnet18, MLPLayer7, MLPLayer3
 from utils.torch_utils import TorchUtils
 
@@ -45,6 +46,10 @@ class ModelComponent:
                 model = MLPLayer3(
                     input_dim=model_config["input_dim"],
                     output_dim=model_config["output_dim"],
+                )
+            case "bert":
+                model = BertForSequenceClassification.from_pretrained(
+                    "bert-base-uncased", num_labels=model_config["num_labels"]
                 )
             case _:
                 raise ValueError(f"Unsupported model: {model_name}")

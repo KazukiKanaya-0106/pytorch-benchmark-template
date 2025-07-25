@@ -114,10 +114,30 @@ class TorchUtils:
         バッチを入力とラベルに分割する
         """
         if isinstance(batch, dict):
-            inputs = {k: v for k, v in batch.items() if k != "labels"}
-            labels = batch.get("labels", None)
+            # "labels" または "label" をサポート
+            label_key = "labels" if "labels" in batch else "label"
+            inputs = {k: v for k, v in batch.items() if k != label_key}
+            labels = batch.get(label_key, None)
             return inputs, labels
+
         elif isinstance(batch, (list, tuple)) and len(batch) >= 2:
             return batch[0], batch[1]
+
         else:
             raise TypeError(f"Unsupported batch type: {type(batch)}")
+
+    @staticmethod
+    def resolve_forward_fn(dataset_name: str):
+        def forward_image(model, X):
+            return model(X)
+
+        def forward_nlp(model, X):
+            return model(**X).logits  # transformers系は logits を返す必要あり
+
+        match dataset_name:
+            case "cifar10":
+                return forward_image
+            case "sst2":
+                return forward_nlp
+            case _:
+                raise ValueError(f"Unsupported dataset: {dataset_name}")

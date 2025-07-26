@@ -6,7 +6,6 @@ from typing import Callable
 import torch
 from torch.utils.data import DataLoader, Dataset
 
-from core import Config
 from components import *
 from scripts import ModelTrainer, EarlyStopper
 from utils import TorchUtils, MLflow, TensorBoard, FileUtils, DisplayUtils
@@ -15,18 +14,13 @@ from utils import TorchUtils, MLflow, TensorBoard, FileUtils, DisplayUtils
 class Experiment:
     def __init__(
         self,
-        config_path: str | None = None,
-        base_path: str = "configs/base.yml",
+        config: dict,
         key: str = "",
-        config_override: dict | None = None,
         output_dir: str | None = None,
         sub_dir: str | None = None,
     ) -> None:
 
-        if config_override is not None:
-            self.config: dict = config_override
-        else:
-            self.config: dict = Config(base_path=base_path, override_path=config_path, key=key).config
+        self.config = config
 
         self.key: str = self.config["meta"]["key"]
         self.seed: int | None = self.config["meta"].get("seed")
@@ -36,6 +30,7 @@ class Experiment:
         self.sub_dir: str | None = sub_dir
         if self.sub_dir:
             self.output_dir = os.path.join(self.output_dir, self.sub_dir)
+        os.makedirs(self.output_dir, exist_ok=True)
         FileUtils.save_dict_to_yaml(self.config, f"{self.output_dir}/original_config_backup.yml")
 
         self.train_loader: DataLoader | None = None

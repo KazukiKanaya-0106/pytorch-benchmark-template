@@ -93,28 +93,3 @@ class DataStructureUtils:
         valid_df, test_df = train_test_split(temp_df, train_size=valid_rel, random_state=random_state)
 
         return train_df, valid_df, test_df
-
-    @staticmethod
-    def truncate_loader(
-        loader: DataLoader, fraction: float, batch_size: int, num_workers: int, shuffle: bool
-    ) -> DataLoader:
-        """
-        DataLoader のデータを fraction の割合でサブセット化して新しい DataLoader を返す関数。
-        """
-        if not 0 < fraction <= 1.0:
-            raise ValueError(f"[DataStructureUtils] data_fraction must be in (0, 1], but got {fraction}")
-
-        dataset: Dataset = loader.dataset
-        if not isinstance(dataset, Sized):
-            raise TypeError("Dataset must be Sized to support truncation.")
-        total_len = len(dataset)
-        subset_len = math.ceil(total_len * fraction)
-
-        subset = Subset(dataset, indices=list(range(subset_len)))
-
-        return DataLoader(
-            dataset=subset,
-            batch_size=batch_size,
-            shuffle=shuffle,
-            num_workers=num_workers,
-        )

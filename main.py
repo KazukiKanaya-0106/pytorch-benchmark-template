@@ -1,6 +1,6 @@
 import argparse
 
-from core import GridSearchParameters
+from core import Config, GridSearchParameters
 from scripts import Experiment, GridSearch
 
 
@@ -12,9 +12,10 @@ def main() -> None:
     parser.add_argument("--grid-search", "-g", default="", help="Path to grid search config YAML")
     args = parser.parse_args()
 
+    config: dict = Config(base_path=args.base, override_path=args.config, key=args.key).config
+
     exp = Experiment(
-        config_path=args.config,
-        base_path=args.base,
+        config=config,
         key=args.key,
     )
 

@@ -46,15 +46,15 @@ class BinaryFocalLoss(nn.Module):
         smoothing = 1e-8
         correct_label_probs = torch.clamp(correct_label_probs, smoothing, 1.0 - smoothing)
 
-        # フォーカル損失の計算
+        # 損失の計算
         loss = -alpha_t * ((1 - correct_label_probs) ** self.gamma) * torch.log(correct_label_probs)
 
-        # Reduction の適用
-        if self.reduction == "mean":
-            return loss.mean()
-        elif self.reduction == "sum":
-            return loss.sum()
-        elif self.reduction == "none":
-            return loss
-        else:
-            raise ValueError(f"Invalid reduction: {self.reduction}")
+        match self.reduction:
+            case "mean":
+                return loss.mean()
+            case "sum":
+                return loss.sum()
+            case "none":
+                return loss
+            case _:
+                raise ValueError(f"Invalid reduction: {self.reduction}")

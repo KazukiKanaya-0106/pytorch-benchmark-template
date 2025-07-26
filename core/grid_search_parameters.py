@@ -7,11 +7,9 @@ class GridSearchParameters:
     """
 
     def __init__(self, grid_search_params_path: str) -> None:
-        self._params_dict: dict = {}
-        if grid_search_params_path:
-            raw_params_dict: dict = FileUtils.load_yaml_as_dict(grid_search_params_path)
-            params_dict: dict = DataStructureUtils.convert_to_builtin_types(raw_params_dict)
-            self._params_dict = params_dict
+        raw_params_dict: dict = FileUtils.load_yaml_as_dict(grid_search_params_path)
+        params_dict: dict = DataStructureUtils.convert_to_builtin_types(raw_params_dict)
+        self._params_dict = params_dict
 
     @property
     def parameters(self) -> dict:

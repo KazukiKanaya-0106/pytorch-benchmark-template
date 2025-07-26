@@ -1,6 +1,6 @@
 import os
 from io import BytesIO
-from typing import Literal
+from typing import Literal, Callable
 import torch
 from torch.nn import Module
 from torch.optim import Optimizer
@@ -29,7 +29,7 @@ class ModelTrainer:
         save_best_monitor: str,
         monitor_task: Literal["min", "max"],
         best_weight_source: str | BytesIO,
-        forward_fn: callable = lambda model, X: model(X),
+        forward_fn: Callable = lambda model, X: model(X),
         tensorboard: TensorBoard | None = None,
         mlflow: MLflow | None = None,
     ) -> None:

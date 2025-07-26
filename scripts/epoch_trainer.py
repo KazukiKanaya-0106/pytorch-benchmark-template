@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Callable
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 import torch
@@ -20,7 +20,7 @@ class EpochTrainer:
         device: torch.device,
         data_loader: DataLoader,
         mode: Literal["training", "validation"],
-        forward_fn: callable = lambda model, X: model(X),
+        forward_fn: Callable = lambda model, X: model(X),
     ) -> None:
         self.model: nn.Module = model
         self.loss_fn: nn.Module = loss_fn

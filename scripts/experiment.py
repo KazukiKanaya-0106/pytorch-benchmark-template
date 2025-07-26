@@ -2,6 +2,7 @@ import os
 import warnings
 
 warnings.filterwarnings("ignore")
+from typing import Callable
 import torch
 from torch.utils.data import DataLoader, Dataset
 
@@ -64,7 +65,7 @@ class Experiment:
         return path
 
     @property
-    def forward_fn(self) -> callable:
+    def forward_fn(self) -> Callable:
         return TorchUtils.resolve_forward_fn(self.config["training"]["dataset"])
 
     def setup_seed(self) -> None:

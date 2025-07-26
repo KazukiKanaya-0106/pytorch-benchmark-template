@@ -22,10 +22,10 @@ class GlueSST2Datasets:
 
         # 検証用データの分割（valid/test）
         valid_test = tokenized["validation"]
-        valid_size = int(len(valid_test) * data_config["split"]["valid"])
+        valid_size = int(len(valid_test) * data_config["split"]["validation"])
         test_size = len(valid_test) - valid_size
 
-        self._valid, self._test = random_split(valid_test, [val_size, test_size])
+        self._valid, self._test = random_split(valid_test, [valid_size, test_size])
 
     @property
     def datasets(self):

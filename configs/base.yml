@@ -1,0 +1,134 @@
+# メタデータの設定
+meta:
+  project: pytorch-benchmark-template
+  seed: 42
+  device: cuda
+  description: "benchmark on CIFAR10"
+  timestamp: ""  # 自動設定（ConfigComponent側で挿入）
+  key: ""         # 自動設定（ConfigComponent側で挿入）
+
+# 訓練の設定
+training:
+  dataset: cifar10
+  weight: null
+  epochs: 50
+  model: mlp_layer7
+  loss: cross_entropy_loss
+  optimizer: adam
+  lr_scheduler: null
+  early_stopping: false
+
+
+# 検証の設定
+evaluation:
+  metrics: [accuracy, f1, precision, recall]
+  task: multiclass
+  average: macro
+  save_best_monitor: accuracy
+  monitor_task: max
+
+# ログの設定
+logging:
+  root_dir: artifacts/
+  experiment_assets:
+    dir: experiment_assets/
+
+  tensorboard:
+    dir: tensorboard/
+
+  mlflow:
+    dir: mlflow/
+
+# 各種コンポーネントの設定
+model:
+  resnet18:
+    in_channels: 3
+    output_dim: 10
+    pretrained: false
+  mlp_layer7:
+    input_dim: 3072
+    output_dim: 10
+  mlp_layer3:
+    input_dim: 3072
+    output_dim: 10
+  bert:
+    num_labels: 2
+
+
+loss:
+  cross_entropy_loss:
+    reduction: mean
+
+  binary_cross_entropy_loss:
+    reduction: mean
+
+  binary_focal_loss:
+    alpha: [0.75, 0.25]
+    gamma: 2.0
+    reduction: mean
+
+optimizer:
+  adam:
+    learning_rate: 1e-4
+    weight_decay: 0.0
+  sgd:
+    learning_rate: 1e-4
+    weight_decay: 0.0
+
+lr_scheduler:
+  cosine_annealing:
+    T_max: 50
+    eta_min: 1e-5
+    last_epoch: -1
+  reduce_lr_on_plateau:
+    # evaluationの指標とタスクに基づく
+    factor: 0.1
+    patience: 10
+    min_lr: 1e-6
+  step_lr:
+    step_size: 10
+    gamma: 0.1
+    last_epoch: -1
+
+# evaluationの指標とタスクに基づく
+early_stopping:
+  delta: 0
+  verbose: true
+  patience: 10
+
+grid_search:
+  epochs: 3
+  data:
+    fraction: 0.5
+    batch_size: 256
+    num_workers: 0
+    shuffle_train: True
+
+
+dataset:
+  cifar10:
+    downloads: data/downloads/
+    num_classes: 10
+
+    fraction: 1.0  # 全体から使用する割合
+    split:
+      training: 0.7
+      validation: 0.3
+
+    loader:
+      batch_size: 256
+      num_workers: 0
+      shuffle_train: true
+  
+  sst2:
+    downloads: data/downloads/
+    num_classes: 2
+
+    fraction: 1.0
+    split:
+      validation: 0.5  # test = 1 - validation
+
+    loader:
+      batch_size: 16
+      num_workers: 1
+      shuffle_train: true

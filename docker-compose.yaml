@@ -1,0 +1,17 @@
+services:
+  pytorch-benchmark-template:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pytorch-benchmark-template-container
+    volumes:
+      - .:/workspace
+    ports:
+      - "5000:5000"
+      - "6006:6006"
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    stdin_open: true
+    tty: true

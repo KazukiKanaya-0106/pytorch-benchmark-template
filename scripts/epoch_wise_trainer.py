@@ -10,7 +10,7 @@ import contextlib
 from utils import TorchUtils
 
 
-class EpochTrainer:
+class EpochWiseTrainer:
     def __init__(
         self,
         model: nn.Module,

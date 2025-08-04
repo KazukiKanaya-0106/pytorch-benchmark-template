@@ -8,13 +8,13 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import _LRScheduler, ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torchmetrics import Metric
-from scripts.epoch_trainer import EpochTrainer
+from scripts.epoch_wise_trainer import EpochWiseTrainer
 from scripts.evaluator import Validator, Tester
 from scripts.early_stopper import EarlyStopper
 from utils import TensorBoard, DataStructureUtils, MLflow, TorchUtils
 
 
-class ModelTrainer:
+class ModelTrainerWithEvaluation:
     def __init__(
         self,
         device: torch.device,
@@ -34,7 +34,7 @@ class ModelTrainer:
         tensorboard: TensorBoard | None = None,
         mlflow: MLflow | None = None,
     ) -> None:
-        self.epoch_trainer = EpochTrainer(
+        self.epoch_wise_trainer = EpochWiseTrainer(
             model=model,
             loss_fn=loss_fn,
             metrics=metrics,
@@ -91,7 +91,7 @@ class ModelTrainer:
             current_lr = self.optimizer.param_groups[0]["lr"]
             print(f"learning_rate: {current_lr:.8f}")
 
-            train_log: dict = self.epoch_trainer.fit()
+            train_log: dict = self.epoch_wise_trainer.fit()
             valid_log: dict = self.validator.validate()
 
             train_monitor_score = train_log[self.save_best_monitor]

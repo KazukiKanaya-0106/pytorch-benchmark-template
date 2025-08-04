@@ -1,16 +1,16 @@
-from .epoch_trainer import EpochTrainer
+from .epoch_wise_trainer import EpochWiseTrainer
 from .evaluator import Validator, Tester
-from .model_trainer import ModelTrainer
+from .model_trainer_with_evaluation import ModelTrainerWithEvaluation
 from .early_stopper import EarlyStopper
 from .grid_search import GridSearch
 from .model_pipeline import ModelPipeline
 
 
 __all__ = [
-    "EpochTrainer",
+    "EpochWiseTrainer",
     "Validator",
     "Tester",
-    "ModelTrainer",
+    "ModelTrainerWithEvaluation",
     "EarlyStopper",
     "GridSearch",
     "ModelPipeline",

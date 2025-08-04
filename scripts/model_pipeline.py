@@ -10,7 +10,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
 
 from components import *
-from scripts import ModelTrainer, EarlyStopper
+from scripts import ModelTrainerWithEvaluation, EarlyStopper
 from utils import TorchUtils, MLflow, TensorBoard, FileUtils, DisplayUtils
 
 
@@ -152,7 +152,7 @@ class ModelPipeline:
         )
 
     def train_valid_test(self) -> None:
-        trainer = ModelTrainer(
+        trainer = ModelTrainerWithEvaluation(
             device=self._device,
             epochs=self._epochs,
             train_loader=self._train_loader,

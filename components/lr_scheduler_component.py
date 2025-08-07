@@ -1,6 +1,6 @@
 from torch.optim import Optimizer
-from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR, ReduceLROnPlateau, _LRScheduler
-from typing import Optional, Literal
+from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR, ReduceLROnPlateau, LRScheduler
+from typing import Literal
 
 
 class LRSchedulerComponent:
@@ -16,7 +16,7 @@ class LRSchedulerComponent:
 
     def _build_lr_scheduler(
         self, lr_scheduler_name: str, lr_scheduler_config: dict, mode: Literal["min", "max"], optimizer: Optimizer
-    ) -> Optional[_LRScheduler]:
+    ) -> LRScheduler | None:
         if lr_scheduler_name is None:
             return None
 
@@ -50,5 +50,5 @@ class LRSchedulerComponent:
                 raise ValueError(f"Unsupported LR scheduler: {lr_scheduler_name}")
 
     @property
-    def lr_scheduler(self) -> Optional[_LRScheduler]:
+    def lr_scheduler(self) -> LRScheduler | None:
         return self._lr_scheduler

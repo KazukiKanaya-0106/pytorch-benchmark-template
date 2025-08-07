@@ -8,6 +8,7 @@ import torch
 from typing import Literal
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
+from torch.optim.lr_scheduler import LRScheduler
 
 from components import *
 from scripts import ModelTrainerWithEvaluation, EarlyStopper
@@ -49,7 +50,7 @@ class ModelPipeline:
         self._loss_fn: nn.Module | None = None
         self._metrics: list | None = None
         self._optimizer: torch.optim.Optimizer | None = None
-        self._lr_scheduler: object | None = None
+        self._lr_scheduler: LRScheduler | None = None
         self._early_stopper: EarlyStopper | None = None
 
         self._tensorboard: TensorBoard | None = None
@@ -93,42 +94,65 @@ class ModelPipeline:
         ).loaders
         self._train_loader, self._valid_loader, self._test_loader = loaders
 
-    def init_components(self) -> None:
+    def init_components(
+        self,
+        model: nn.Module | None = None,
+        loss_fn: nn.Module | None = None,
+        metrics: list | None = None,
+        optimizer: torch.optim.Optimizer | None = None,
+        lr_scheduler: LRScheduler | None = None,
+        early_stopper: EarlyStopper | None = None,
+    ) -> None:
         c = self._config
 
-        self._model = ModelComponent(
-            model_name=c["training"]["model"],
-            model_config=c["model"][c["training"]["model"]],
-            device=self._device,
-            weight_source=c["training"]["weight"],
-        ).model
+        self._model = (
+            model
+            or ModelComponent(
+                model_name=c["training"]["model"],
+                model_config=c["model"][c["training"]["model"]],
+                device=self._device,
+                weight_source=c["training"]["weight"],
+            ).model
+        )
 
-        self._loss_fn = LossComponent(
-            loss_name=c["training"]["loss"],
-            loss_config=c["loss"][c["training"]["loss"]],
-        ).loss
+        self._loss_fn = (
+            loss_fn
+            or LossComponent(
+                loss_name=c["training"]["loss"],
+                loss_config=c["loss"][c["training"]["loss"]],
+            ).loss
+        )
 
-        self._metrics = MetricsComponent(
-            evaluation_config=c["evaluation"],
-            num_classes=c["dataset"][c["training"]["dataset"]]["num_classes"],
-            device=self._device,
-        ).metrics
+        self._metrics = (
+            metrics
+            or MetricsComponent(
+                evaluation_config=c["evaluation"],
+                num_classes=c["dataset"][c["training"]["dataset"]]["num_classes"],
+                device=self._device,
+            ).metrics
+        )
 
-        self._optimizer = OptimizerComponent(
-            optimizer_name=c["training"]["optimizer"],
-            optimizer_config=c["optimizer"][c["training"]["optimizer"]],
-            model=self._model,
-        ).optimizer
+        self._optimizer = (
+            optimizer
+            or OptimizerComponent(
+                optimizer_name=c["training"]["optimizer"],
+                optimizer_config=c["optimizer"][c["training"]["optimizer"]],
+                model=self._model,
+            ).optimizer
+        )
 
-        self._lr_scheduler = LRSchedulerComponent(
-            lr_scheduler_name=c["training"]["lr_scheduler"],
-            lr_scheduler_config=c["lr_scheduler"].get(c["training"]["lr_scheduler"], None),
-            mode=c["evaluation"]["monitor_task"],
-            optimizer=self._optimizer,
-        ).lr_scheduler
+        self._lr_scheduler = (
+            lr_scheduler
+            or LRSchedulerComponent(
+                lr_scheduler_name=c["training"]["lr_scheduler"],
+                lr_scheduler_config=c["lr_scheduler"].get(c["training"]["lr_scheduler"], None),
+                mode=c["evaluation"]["monitor_task"],
+                optimizer=self._optimizer,
+            ).lr_scheduler
+        )
 
         if c["training"].get("early_stopping"):
-            self._early_stopper = EarlyStopper(
+            self._early_stopper = early_stopper or EarlyStopper(
                 patience=c["early_stopping"]["patience"],
                 delta=c["early_stopping"]["delta"],
                 task=c["evaluation"]["monitor_task"],

@@ -5,7 +5,7 @@ from typing import Literal, Callable
 import torch
 from torch.nn import Module
 from torch.optim import Optimizer
-from torch.optim.lr_scheduler import _LRScheduler, ReduceLROnPlateau
+from torch.optim.lr_scheduler import LRScheduler, ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torchmetrics import Metric
 from scripts.epoch_wise_trainer import EpochWiseTrainer
@@ -26,7 +26,7 @@ class ModelTrainerWithEvaluation:
         loss_fn: Module,
         metrics: list[Metric],
         optimizer: Optimizer,
-        lr_scheduler: _LRScheduler | None,
+        lr_scheduler: LRScheduler | None,
         early_stopper: EarlyStopper | None,
         save_best_monitor: str,
         monitor_task: Literal["min", "max"],
@@ -66,7 +66,7 @@ class ModelTrainerWithEvaluation:
         )
         self.model: Module = model.to(device)
         self.optimizer: Optimizer = optimizer
-        self.lr_scheduler: _LRScheduler | None = lr_scheduler
+        self.lr_scheduler: LRScheduler | None = lr_scheduler
         self.early_stopper: EarlyStopper | None = early_stopper
         self.epochs: int = epochs
         self.save_best_monitor: str = save_best_monitor

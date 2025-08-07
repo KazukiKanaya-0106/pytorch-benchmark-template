@@ -1,6 +1,6 @@
 from typing import Any, Literal
 
-from utils import DataStructureUtils
+from utils.data_structure_utils import DataStructureUtils
 
 
 class EarlyStopper:

@@ -2,7 +2,9 @@ from sklearn.model_selection import ParameterGrid
 import os
 
 from scripts.model_pipeline import ModelPipeline
-from utils import DataStructureUtils, FileUtils, TorchUtils
+from utils.data_structure_utils import DataStructureUtils
+from utils.file_utils import FileUtils
+from utils.torch_utils import TorchUtils
 
 
 class GridSearch:

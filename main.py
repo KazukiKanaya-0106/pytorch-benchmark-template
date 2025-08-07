@@ -1,7 +1,10 @@
 import argparse
 
-from core import Config, GridSearchParameters
-from scripts import ModelPipeline, GridSearch
+from core.config import Config
+from core.grid_search_parameters import GridSearchParameters
+
+from scripts.model_pipeline import ModelPipeline
+from scripts.grid_search import GridSearch
 
 
 def main() -> None:

@@ -4,7 +4,7 @@ import mlflow
 import mlflow.pytorch
 from torch.nn import Module
 
-from .data_structure_utils import DataStructureUtils
+from utils.data_structure_utils import DataStructureUtils
 
 
 class MLflow:

@@ -11,7 +11,11 @@ from torchmetrics import Metric
 from scripts.epoch_wise_trainer import EpochWiseTrainer
 from scripts.evaluator import Validator, Tester
 from scripts.early_stopper import EarlyStopper
-from utils import TensorBoard, DataStructureUtils, MLflow, TorchUtils
+
+from utils.torch_utils import TorchUtils
+from utils.data_structure_utils import DataStructureUtils
+from utils.tensorboard import TensorBoard
+from utils.mlflow import MLflow
 
 
 class ModelTrainerWithEvaluation:

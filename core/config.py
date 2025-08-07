@@ -1,5 +1,6 @@
 import datetime
-from utils import DataStructureUtils, FileUtils
+from utils.file_utils import FileUtils
+from utils.data_structure_utils import DataStructureUtils
 
 
 class Config:

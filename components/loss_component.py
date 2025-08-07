@@ -1,5 +1,5 @@
 import torch.nn as nn
-from losses import BinaryFocalLoss
+from losses.binary_focal_loss import BinaryFocalLoss
 
 
 class LossComponent:

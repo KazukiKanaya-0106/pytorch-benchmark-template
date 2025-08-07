@@ -1,5 +1,6 @@
 from torch.utils.data import Dataset
-from data.datasets import CIFAR10Datasets, GlueSST2Datasets
+from data.datasets.cifar10_datasets import CIFAR10Datasets
+from data.datasets.glue_sst2_datasets import GlueSST2Datasets
 
 
 class DatasetComponent:

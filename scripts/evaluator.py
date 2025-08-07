@@ -6,7 +6,7 @@ import torch.nn as nn
 from torch.optim import Optimizer
 from torchmetrics import Metric
 from tqdm import tqdm
-from utils import TorchUtils
+from utils.torch_utils import TorchUtils
 
 
 class _Evaluator:

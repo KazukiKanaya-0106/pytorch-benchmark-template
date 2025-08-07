@@ -6,8 +6,7 @@ import torch.nn as nn
 from torch.optim import Optimizer
 from torchmetrics import Metric
 from tqdm import tqdm
-import contextlib
-from utils import TorchUtils
+from utils.torch_utils import TorchUtils
 
 
 class EpochWiseTrainer:

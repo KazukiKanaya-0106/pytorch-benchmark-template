@@ -3,7 +3,9 @@ import segmentation_models_pytorch as smp
 import torch
 from torch.nn import Module
 from transformers import BertForSequenceClassification
-from models import Resnet18, MLPLayer7, MLPLayer3
+from models.resnet18 import Resnet18
+from models.mlp_layer7 import MLPLayer7
+from models.mlp_layer3 import MLPLayer3
 from utils.torch_utils import TorchUtils
 
 

@@ -5,7 +5,6 @@ from typing import Any
 import torch
 import numpy as np
 from torch.utils.data import DataLoader, Dataset, Subset
-from collections.abc import Sized
 
 
 class DataStructureUtils:

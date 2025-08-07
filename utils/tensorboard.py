@@ -1,5 +1,5 @@
 import os
-from .data_structure_utils import DataStructureUtils
+from utils.data_structure_utils import DataStructureUtils
 from torch.utils.tensorboard import SummaryWriter
 
 

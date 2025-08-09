@@ -1,5 +1,4 @@
-from typing import Literal, Callable
-from torch.optim.lr_scheduler import ReduceLROnPlateau
+from typing import Callable
 from torch.utils.data import DataLoader
 import torch
 import torch.nn as nn

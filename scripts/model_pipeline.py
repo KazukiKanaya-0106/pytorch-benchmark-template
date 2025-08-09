@@ -22,7 +22,6 @@ from scripts.model_trainer_with_evaluation import ModelTrainerWithEvaluation
 from scripts.early_stopper import EarlyStopper
 
 from utils.torch_utils import TorchUtils
-from utils.data_structure_utils import DataStructureUtils
 from utils.file_utils import FileUtils
 from utils.tensorboard import TensorBoard
 from utils.mlflow import MLflow
@@ -41,7 +40,7 @@ class ModelPipeline:
         self._config = config
 
         self._key: str = config["meta"]["key"]
-        self._seed: int | None = config["meta"]["seed"]
+        self._seed: int = config["meta"]["seed"] or 42
         self._epochs: int = config["training"]["epochs"]
         self._save_best_monitor: str = config["evaluation"]["save_best_monitor"]
         self._monitor_task: Literal["min", "max"] = config["evaluation"]["monitor_task"]
@@ -189,7 +188,11 @@ class ModelPipeline:
             log_dir=mlflow_dir,
         )
 
-    def train_valid_test(self) -> None:
+    def train_valid_test(self) -> dict:
+        if not self._train_loader or not self._valid_loader or not self._test_loader:
+            raise ValueError("Data loaders are not initialized.")
+        if not self._model or not self._loss_fn or not self._metrics or not self._optimizer:
+            raise ValueError("Model, loss function, metrics, and optimizer are not initialized.")
         trainer = ModelTrainerWithEvaluation(
             device=self._device,
             epochs=self._epochs,

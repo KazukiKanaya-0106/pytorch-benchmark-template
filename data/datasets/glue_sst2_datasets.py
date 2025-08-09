@@ -1,7 +1,7 @@
 from datasets import load_dataset
 from transformers import BertTokenizer
 from torch.utils.data import random_split, Subset
-import torch
+from typing import Any
 
 
 class GlueSST2Datasets:
@@ -12,7 +12,7 @@ class GlueSST2Datasets:
         def tokenize_fn(example):
             return tokenizer(example["sentence"], padding="max_length", truncation=True, max_length=128)
 
-        tokenized = dataset.map(tokenize_fn, batched=True)
+        tokenized: Any = dataset.map(tokenize_fn, batched=True)
         tokenized.set_format(type="torch", columns=["input_ids", "attention_mask", "label"])
 
         data_fraction: float = data_config["fraction"]

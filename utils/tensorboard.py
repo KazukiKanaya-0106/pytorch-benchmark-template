@@ -1,6 +1,5 @@
-import os
 from utils.data_structure_utils import DataStructureUtils
-from torch.utils.tensorboard import SummaryWriter
+from torch.utils.tensorboard.writer import SummaryWriter
 
 
 class TensorBoard:

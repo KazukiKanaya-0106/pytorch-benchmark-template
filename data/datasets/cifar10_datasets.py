@@ -1,7 +1,6 @@
 import os
 from torchvision import datasets, transforms
 from torch.utils.data import random_split, Subset, Dataset
-import random
 
 
 class CIFAR10Datasets:

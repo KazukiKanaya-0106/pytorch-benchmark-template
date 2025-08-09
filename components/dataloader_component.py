@@ -18,7 +18,7 @@ class DataLoaderComponent:
         self._train_loader, self._valid_loader, self._test_loader = self._build_dataloader(loader_config, generator)
 
     def _build_dataloader(
-        self, loader_config: dict, generator: torch.Generator
+        self, loader_config: dict, generator: torch.Generator | None
     ) -> tuple[DataLoader, DataLoader, DataLoader]:
         batch_size: int = loader_config["batch_size"]
         num_workers: int = loader_config["num_workers"]

@@ -28,7 +28,7 @@ from utils.mlflow import MLflow
 from utils.display_utils import DisplayUtils
 
 
-class ModelPipeline:
+class ModelWorkflow:
     def __init__(
         self,
         config: dict,

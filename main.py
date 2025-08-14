@@ -3,7 +3,7 @@ import argparse
 from core.config import Config
 from core.grid_search_parameters import GridSearchParameters
 
-from scripts.model_pipeline import ModelPipeline
+from scripts.model_workflow import ModelWorkflow
 from scripts.grid_search import GridSearch
 
 
@@ -18,29 +18,29 @@ def main() -> None:
 
     config: dict = Config(base_path=args.base, override_path=args.config, key=args.key).config
 
-    pipeline = ModelPipeline(
+    workflow = ModelWorkflow(
         config=config,
         key=args.key,
     )
 
     if args.grid_search:
-        pipeline.setup_seed()
-        pipeline.init_dataloaders()
+        workflow.setup_seed()
+        workflow.init_dataloaders()
         param_grid = GridSearchParameters(args.grid_search).flattened_parameters
-        gs = GridSearch(pipeline, param_grid)
+        gs = GridSearch(workflow, param_grid)
         best_config, _ = gs.run()
 
-        pipeline = ModelPipeline(
+        workflow = ModelWorkflow(
             config=best_config,
             key=args.key,
         )
 
-    pipeline.setup_seed()
-    pipeline.init_dataloaders()
-    pipeline.init_components()
-    pipeline.init_loggers()
-    pipeline.train_valid_test()
-    pipeline.predict(skip_plot=args.skip_plot)
+    workflow.setup_seed()
+    workflow.init_dataloaders()
+    workflow.init_components()
+    workflow.init_loggers()
+    workflow.train_valid_test()
+    workflow.predict(skip_plot=args.skip_plot)
 
 
 if __name__ == "__main__":

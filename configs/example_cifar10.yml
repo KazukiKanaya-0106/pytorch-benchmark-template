@@ -14,7 +14,5 @@ training:
 # 検証の設定
 evaluation:
   metrics: [accuracy, f1]
-  task: multiclass
-  average: macro
   save_best_monitor: accuracy
   monitor_task: max

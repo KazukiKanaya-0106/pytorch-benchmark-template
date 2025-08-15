@@ -1,0 +1,17 @@
+{
+  "typeCheckingMode": "off",
+
+  "reportUnusedImport": "error",
+  "reportUnusedVariable": "error",
+  "reportUnusedFunction": "warning",
+  "reportUnusedClass": "warning",
+  "reportUnnecessaryCast": "warning",
+  "reportUnnecessaryTypeIgnoreComment": "warning",
+
+  "reportMissingImports": "error",
+  "reportPossiblyUnboundVariable": "error",
+
+  "reportOptionalMemberAccess": "warning",
+  "reportOptionalSubscript": "warning",
+  "reportOptionalCall": "warning"
+}

@@ -1,11 +1,10 @@
 from io import BytesIO
-from typing import Literal, Callable
+from typing import Literal, Callable, Type, TypeVar
 import torch
 from torch import nn
 import random
 import numpy as np
 import os
-import time
 
 
 class TorchUtils:
@@ -46,14 +45,6 @@ class TorchUtils:
         print(f"[TorchUtils] Global seed set to {master_seed}, DataLoader generator seed: {generator_seed}")
 
         return torch.Generator().manual_seed(generator_seed)
-
-    @staticmethod
-    def count_parameters(model: nn.Module) -> int:
-        return sum(p.numel() for p in model.parameters())
-
-    @staticmethod
-    def count_trainable_parameters(model: nn.Module) -> int:
-        return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
     @staticmethod
     def load_model_state(model: nn.Module, source: str | BytesIO | dict):
@@ -121,3 +112,25 @@ class TorchUtils:
                 return forward_nlp
             case _:
                 raise ValueError(f"Unsupported dataset: {dataset_name}")
+
+    T = TypeVar("T", bound=nn.Module)
+
+    @staticmethod
+    def get_modules(model: nn.Module, target: Type[T]) -> list[tuple[str, T]]:
+        modules = []
+        for name, module in model.named_modules():
+            if isinstance(module, target):
+                modules.append((name, module))
+        return modules
+
+    @staticmethod
+    def replace_module_by_name(model: nn.Module, target_name: str, new_module: nn.Module):
+        """
+        model の中から target_name に一致するモジュールを new_module に置換する。
+        target_name は model.named_modules() が返す名前（ドット区切り対応）
+        """
+        parts = target_name.split(".")
+        parent = model
+        for p in parts[:-1]:
+            parent = getattr(parent, p)
+        setattr(parent, parts[-1], new_module)

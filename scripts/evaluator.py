@@ -1,9 +1,7 @@
-from typing import Literal, Callable
-from torch.optim.lr_scheduler import ReduceLROnPlateau
+from typing import Callable
 from torch.utils.data import DataLoader
 import torch
 import torch.nn as nn
-from torch.optim import Optimizer
 from torchmetrics import Metric
 from tqdm import tqdm
 from utils.torch_utils import TorchUtils
@@ -15,7 +13,6 @@ class _Evaluator:
         model: nn.Module,
         loss_fn: nn.Module,
         metrics: list[Metric],
-        optimizer: Optimizer,
         device: torch.device,
         data_loader: DataLoader,
         forward_fn: Callable = lambda model, X: model(X),
@@ -24,15 +21,12 @@ class _Evaluator:
         self.model: nn.Module = model
         self.loss_fn: nn.Module = loss_fn
         self.metrics: list[Metric] = metrics
-        self.optimizer: Optimizer = optimizer
         self.data_loader: DataLoader = data_loader
         self.device = device
         self.forward_fn = forward_fn
         self.description: str = description
 
     def evaluate(self) -> dict:
-
-        current_lr = self.optimizer.param_groups[0]["lr"]
 
         self.model.eval()
 
@@ -46,7 +40,7 @@ class _Evaluator:
 
         loop = tqdm(
             self.data_loader,
-            desc=f"{self.description.capitalize()}",
+            desc=f"{self.description}",
             leave=True,
             dynamic_ncols=True,
         )
@@ -87,7 +81,6 @@ class Validator(_Evaluator):
         model: nn.Module,
         loss_fn: nn.Module,
         metrics: list[Metric],
-        optimizer: Optimizer,
         device: torch.device,
         data_loader: DataLoader,
         forward_fn: Callable = lambda model, X: model(X),
@@ -97,7 +90,6 @@ class Validator(_Evaluator):
             model=model,
             loss_fn=loss_fn,
             metrics=metrics,
-            optimizer=optimizer,
             device=device,
             data_loader=data_loader,
             forward_fn=forward_fn,
@@ -115,7 +107,6 @@ class Tester(_Evaluator):
         model: nn.Module,
         loss_fn: nn.Module,
         metrics: list[Metric],
-        optimizer: Optimizer,
         device: torch.device,
         data_loader: DataLoader,
         forward_fn: Callable = lambda model, X: model(X),
@@ -125,7 +116,6 @@ class Tester(_Evaluator):
             model=model,
             loss_fn=loss_fn,
             metrics=metrics,
-            optimizer=optimizer,
             device=device,
             data_loader=data_loader,
             forward_fn=forward_fn,

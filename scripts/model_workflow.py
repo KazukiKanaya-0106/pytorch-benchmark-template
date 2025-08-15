@@ -32,14 +32,14 @@ class ModelWorkflow:
     def __init__(
         self,
         config: dict,
-        key: str = "",
+        key: str | None = None,
         output_dir: str | None = None,
         sub_dir: str | None = None,
     ) -> None:
 
         self._config = config
 
-        self._key: str = config["meta"]["key"]
+        self._key: str = key or config["meta"]["key"]
         self._seed: int = config["meta"]["seed"] or 42
         self._epochs: int = config["training"]["epochs"]
         self._save_best_monitor: str = config["evaluation"]["save_best_monitor"]
@@ -164,7 +164,7 @@ class ModelWorkflow:
             ).lr_scheduler
         )
 
-        if c["training"].get("early_stopping"):
+        if c["training"]["early_stopping"]:
             self._early_stopper = early_stopper or EarlyStopper(
                 patience=c["early_stopping"]["patience"],
                 delta=c["early_stopping"]["delta"],
@@ -251,7 +251,7 @@ class ModelWorkflow:
                 "test_result": test_result,
             }
 
-    def predict(self, skip_plot: bool = False) -> None:
+    def predict(self) -> None:
         match self._config["training"]["dataset"]:
             case _:
                 pass

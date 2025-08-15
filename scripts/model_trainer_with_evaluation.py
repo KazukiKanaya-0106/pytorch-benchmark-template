@@ -1,4 +1,3 @@
-import os
 import copy
 from io import BytesIO
 from typing import Literal, Callable
@@ -52,7 +51,6 @@ class ModelTrainerWithEvaluation:
             model=model,
             loss_fn=loss_fn,
             metrics=metrics,
-            optimizer=optimizer,
             data_loader=valid_loader,
             device=device,
             forward_fn=forward_fn,
@@ -62,7 +60,6 @@ class ModelTrainerWithEvaluation:
             model=model,
             loss_fn=loss_fn,
             metrics=metrics,
-            optimizer=optimizer,
             data_loader=test_loader,
             device=device,
             forward_fn=forward_fn,

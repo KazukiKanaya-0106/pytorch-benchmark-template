@@ -48,7 +48,7 @@ class EpochWiseTrainer:
 
         loop = tqdm(
             self.data_loader,
-            desc=f"{self.description.capitalize()}",
+            desc=f"{self.description}",
             leave=True,
             dynamic_ncols=True,
         )

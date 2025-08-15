@@ -12,7 +12,6 @@ def main() -> None:
     parser.add_argument("--config", "-c", required=True, help="Path to config file")
     parser.add_argument("--base", "-b", default="configs/base.yml", help="Path to base config file")
     parser.add_argument("--key", "-k", default="", help="Unique experiment key")
-    parser.add_argument("--skip-plot", "-s", action="store_true", help="Skip plot generation in prediction")
     parser.add_argument("--grid-search", "-g", default="", help="Path to grid search config YAML")
     args = parser.parse_args()
 
@@ -40,7 +39,7 @@ def main() -> None:
     workflow.init_components()
     workflow.init_loggers()
     workflow.train_valid_test()
-    workflow.predict(skip_plot=args.skip_plot)
+    workflow.predict()
 
 
 if __name__ == "__main__":

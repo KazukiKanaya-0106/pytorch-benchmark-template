@@ -139,7 +139,8 @@ class ModelWorkflow:
         self._metrics = (
             metrics
             or MetricsComponent(
-                evaluation_config=c["evaluation"],
+                metrics_config=c["metrics"],
+                metrics_list=c["evaluation"]["metrics"],
                 num_classes=c["dataset"][c["training"]["dataset"]]["num_classes"],
                 device=self._device,
             ).metrics

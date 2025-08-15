@@ -116,6 +116,8 @@ training:
 
 evaluation:
   metrics: [accuracy]
+  save_best_monitor: accuracy
+  monitor_task: max
 ```
 
 ---

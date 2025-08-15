@@ -22,8 +22,6 @@ training:
 # 検証の設定
 evaluation:
   metrics: [accuracy, f1, precision, recall]
-  task: multiclass
-  average: macro
   save_best_monitor: accuracy
   monitor_task: max
 
@@ -54,6 +52,25 @@ model:
   bert:
     num_labels: 2
 
+metrics:
+  accuracy:
+    task: multiclass
+    average: macro
+  iou:
+    task: multiclass
+    average: macro
+  recall:
+    task: multiclass
+    average: macro
+  f1:
+    task: multiclass
+    average: macro
+  precision:
+    task: multiclass
+    average: macro
+  r2:
+    global_mode: true
+  relative_l2_error:
 
 loss:
   cross_entropy_loss:

@@ -1,4 +1,3 @@
-from typing import Literal
 import torch
 from torchmetrics import Metric
 from torchmetrics.classification import (
@@ -9,34 +8,41 @@ from torchmetrics.classification import (
     JaccardIndex,
 )
 
+from metrics.global_r2_score import GlobalR2
+from metrics.relative_l2_error import RelativeL2Error
+
 
 class MetricsComponent:
-    def __init__(self, evaluation_config: dict, num_classes: int, device: torch.device) -> None:
+    def __init__(self, metrics_config: dict, metrics_list: list[str], num_classes: int, device: torch.device) -> None:
         self._metrics = self._build_metrics(
-            evaluation_config=evaluation_config,
+            metrics_config=metrics_config,
+            metrics_list=metrics_list,
             num_classes=num_classes,
             device=device,
         )
 
-    def _build_metrics(self, evaluation_config: dict, num_classes: int, device: torch.device) -> list[Metric]:
-        metric_list: list[str] = evaluation_config["metrics"]
-        average: Literal["micro", "macro", "weighted", "none"] | None = evaluation_config["average"]
-        task: Literal["binary", "multiclass", "multilabel"] = evaluation_config["task"]
-
+    def _build_metrics(
+        self, metrics_config: dict, metrics_list: list[str], num_classes: int, device: torch.device
+    ) -> list[Metric]:
         metrics: list[Metric] = []
 
-        for metric_name in metric_list:
+        for metric_name in metrics_list:
+            c = metrics_config[metric_name]
             match metric_name:
                 case "f1":
-                    metric = F1Score(task=task, num_classes=num_classes, average=average)
+                    metric = F1Score(task=c["task"], num_classes=num_classes, average=c["average"])
                 case "iou":
-                    metric = JaccardIndex(task=task, num_classes=num_classes, average=average)
+                    metric = JaccardIndex(task=c["task"], num_classes=num_classes, average=c["average"])
                 case "precision":
-                    metric = Precision(task=task, num_classes=num_classes, average=average)
+                    metric = Precision(task=c["task"], num_classes=num_classes, average=c["average"])
                 case "recall":
-                    metric = Recall(task=task, num_classes=num_classes, average=average)
+                    metric = Recall(task=c["task"], num_classes=num_classes, average=c["average"])
                 case "accuracy":
-                    metric = Accuracy(task=task, num_classes=num_classes, average=average)
+                    metric = Accuracy(task=c["task"], num_classes=num_classes, average=c["average"])
+                case "r2":
+                    metric = GlobalR2(global_mode=c["global_mode"])
+                case "relative_l2_error":
+                    metric = RelativeL2Error()
                 case _:
                     raise ValueError(f"Unsupported metric: {metric_name}")
             metric.__name__ = metric_name

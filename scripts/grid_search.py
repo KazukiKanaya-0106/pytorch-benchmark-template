@@ -39,7 +39,6 @@ class GridSearch:
 
             workflow = ModelWorkflow(
                 config=candidate_config,
-                key=self.base_workflow.key,
                 output_dir=self.base_workflow.output_dir,
                 sub_dir=sub_dir,
             )

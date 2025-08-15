@@ -1,8 +1,8 @@
 from torch import Tensor
-from torchmetrics import Metric, R2Score
+from torchmetrics import Metric, R2Score as TM_R2Score
 
 
-class GlobalR2(Metric):
+class R2Score(Metric):
     """
     R²を global_mode（flatten）または通常モードで計算する Metric。
     """
@@ -19,7 +19,7 @@ class GlobalR2(Metric):
         """
         super().__init__()
         self.global_mode = global_mode
-        self._r2 = R2Score(**kwargs)
+        self._r2 = TM_R2Score(**kwargs)
 
     def update(self, preds: Tensor, target: Tensor) -> None:
         if self.global_mode:

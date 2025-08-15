@@ -8,7 +8,7 @@ from torchmetrics.classification import (
     JaccardIndex,
 )
 
-from metrics.global_r2_score import GlobalR2
+from metrics.r2_score import R2Score
 from metrics.relative_l2_error import RelativeL2Error
 
 
@@ -40,7 +40,7 @@ class MetricsComponent:
                 case "accuracy":
                     metric = Accuracy(task=c["task"], num_classes=num_classes, average=c["average"])
                 case "r2":
-                    metric = GlobalR2(global_mode=c["global_mode"])
+                    metric = R2Score(global_mode=c["global_mode"])
                 case "relative_l2_error":
                     metric = RelativeL2Error()
                 case _:

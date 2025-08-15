@@ -19,8 +19,8 @@ def main() -> None:
 
     workflow = ModelWorkflow(
         config=config,
-        key=args.key,
     )
+    workflow.save_config()
 
     if args.grid_search:
         workflow.setup_seed()
@@ -31,7 +31,6 @@ def main() -> None:
 
         workflow = ModelWorkflow(
             config=best_config,
-            key=args.key,
         )
 
     workflow.setup_seed()

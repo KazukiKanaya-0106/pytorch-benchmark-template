@@ -51,7 +51,6 @@ class ModelWorkflow:
         if self._sub_dir:
             self._output_dir = os.path.join(self._output_dir, self._sub_dir)
         os.makedirs(self._output_dir, exist_ok=True)
-        FileUtils.save_dict_to_yaml(config, os.path.join(self._output_dir, "original_config_backup.yml"))
 
         self._generator: torch.Generator | None = None
 
@@ -68,6 +67,9 @@ class ModelWorkflow:
 
         self._tensorboard: TensorBoard | None = None
         self._mlflow: MLflow | None = None
+
+    def save_config(self, file_name: str = "original_config_backup.yml") -> None:
+        FileUtils.save_dict_to_yaml(self._config, os.path.join(self._output_dir, file_name))
 
     def _init_device(self, requested: str) -> torch.device:
         if requested == "cuda" and not torch.cuda.is_available():
@@ -151,7 +153,7 @@ class ModelWorkflow:
             or OptimizerComponent(
                 optimizer_name=c["training"]["optimizer"],
                 optimizer_config=c["optimizer"][c["training"]["optimizer"]],
-                model=self._model,
+                model_params=(p for p in self._model.parameters() if p.requires_grad),
             ).optimizer
         )
 

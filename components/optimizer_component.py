@@ -1,27 +1,30 @@
-from torch.nn import Module
+from typing import Iterator
+from torch.nn import Parameter
 import torch.optim as optim
 
 
 class OptimizerComponent:
-    def __init__(self, optimizer_name: str, optimizer_config: dict, model: Module) -> None:
+    def __init__(self, optimizer_name: str, optimizer_config: dict, model_params: Iterator[Parameter]) -> None:
         self._optimizer = self._build_optimizer(
             optimizer_name=optimizer_name,
             optimizer_config=optimizer_config,
-            model=model,
+            model_params=model_params,
         )
 
-    def _build_optimizer(self, optimizer_name: str, optimizer_config: dict, model: Module) -> optim.Optimizer:
+    def _build_optimizer(
+        self, optimizer_name: str, optimizer_config: dict, model_params: Iterator[Parameter]
+    ) -> optim.Optimizer:
 
         match optimizer_name:
             case "adam":
                 return optim.Adam(
-                    model.parameters(),
+                    model_params,
                     lr=float(optimizer_config["learning_rate"]),
                     weight_decay=float(optimizer_config["weight_decay"]),
                 )
             case "sgd":
                 return optim.SGD(
-                    model.parameters(),
+                    model_params,
                     lr=float(optimizer_config["learning_rate"]),
                     weight_decay=float(optimizer_config["weight_decay"]),
                 )

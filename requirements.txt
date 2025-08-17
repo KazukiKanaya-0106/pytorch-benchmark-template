@@ -1,49 +1,27 @@
-# =====================================================================
-# Core ML / Torch  (CUDA 11.8, Python 3.10)
-# =====================================================================
--f https://download.pytorch.org/whl/torch_stable.html
-torch==2.2.2+cu118
-torchvision==0.17.2+cu118
-torchaudio==2.2.2+cu118
-torchmetrics==0.11.4
-
+torchmetrics==1.0.3
 segmentation-models-pytorch==0.5.0
-# =====================================================================
-# Experiment Tracking
-# =====================================================================
-mlflow==2.19.0          # <- pyarrow <18 制約に合わせて更新
-tensorboard==2.19.0
+mlflow==3.2.0
+tensorboard==2.20.0
+numpy==2.1.2
+pandas==2.3.1
+scikit-learn==1.7.1
+matplotlib==3.10.5
+pyarrow==21.0.0
 
-# =====================================================================
-# Data Handling
-# =====================================================================
-numpy==1.26.4
-pandas==2.2.2
-scikit-learn==1.3.2
-matplotlib==3.7.5
-pyarrow==17.0.0         # <- datasets 3.6 & mlflow 2.19 がともに許容
+opencv-python-headless==4.12.0.88
+albumentations==2.0.8
+scikit-image==0.25.2
 
-# =====================================================================
-# Image Processing
-# =====================================================================
-opencv-python-headless==4.9.0.80
-albumentations==1.4.7
-scikit-image>=0.21.0         # albumentations 1.4 依存
+tqdm==4.67.1
+black==25.1.0
+tabulate==0.9.0
+pyright==1.1.403
 
-# =====================================================================
-# Dev / Utility
-# =====================================================================
-tqdm==4.66.4
-black==24.4.2
-
-# =====================================================================
-# Hugging Face / NLP
-# =====================================================================
-transformers==4.52.4
-datasets==3.6.0
-accelerate==1.8.1
-peft==0.15.2
-huggingface-hub==0.33.0
-tokenizers==0.21.1
-safetensors==0.5.3
-sentencepiece==0.1.99
+transformers==4.55.2
+datasets==4.0.0
+accelerate==1.10.0
+peft==0.17.0
+huggingface-hub==0.34.4
+tokenizers==0.21.4
+safetensors==0.6.2
+sentencepiece==0.2.1

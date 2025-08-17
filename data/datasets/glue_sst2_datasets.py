@@ -1,11 +1,12 @@
 from datasets import load_dataset
+import torch
 from transformers import BertTokenizer
 from torch.utils.data import random_split, Subset
 from typing import Any
 
 
 class GlueSST2Datasets:
-    def __init__(self, data_config: dict):
+    def __init__(self, data_config: dict, generator: torch.Generator):
         dataset = load_dataset("glue", "sst2")
         tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
@@ -25,7 +26,7 @@ class GlueSST2Datasets:
         valid_size = int(len(valid_test) * data_config["split"]["validation"])
         test_size = len(valid_test) - valid_size
 
-        self._valid, self._test = random_split(valid_test, [valid_size, test_size])
+        self._valid, self._test = random_split(valid_test, [valid_size, test_size], generator=generator)
 
     @property
     def datasets(self):

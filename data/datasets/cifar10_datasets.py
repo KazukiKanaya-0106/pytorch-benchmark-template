@@ -1,10 +1,11 @@
 import os
+import torch
 from torchvision import datasets, transforms
 from torch.utils.data import random_split, Subset, Dataset
 
 
 class CIFAR10Datasets:
-    def __init__(self, data_config: dict):
+    def __init__(self, data_config: dict, generator: torch.Generator):
         download_dir: str = data_config["downloads"]
         os.makedirs(download_dir, exist_ok=True)
 
@@ -28,7 +29,9 @@ class CIFAR10Datasets:
         train_size = int(total_train_size * train_ratio)
         valid_size = total_train_size - train_size
 
-        self._train_dataset, self._valid_dataset = random_split(partial_train_data, [train_size, valid_size])
+        self._train_dataset, self._valid_dataset = random_split(
+            partial_train_data, [train_size, valid_size], generator=generator
+        )
         self._test_dataset = partial_test_data
 
     @property

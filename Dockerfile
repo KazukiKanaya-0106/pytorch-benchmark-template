@@ -10,9 +10,9 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /workspace
 
-COPY requirements.txt .
+COPY requirements.txt install.sh ./
 RUN pip install --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt
+    && bash ./install.sh
 
 COPY . .
 

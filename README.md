@@ -38,7 +38,8 @@ pytorch-benchmark-template/
 ├── tensorboard.sh           TensorBoard 起動用スクリプト
 ├── Dockerfile               Docker環境構築用ファイル
 ├── docker-compose.yml       Docker環境構築用ファイル
-└── requirements.txt         依存パッケージ一覧
+├── install.sh               依存パッケージのインストール用スクリプト       
+└── requirements.txt         依存パッケージ一覧（torch, torchvison, torchaudioは除く）
 ```
 
 ---
@@ -63,7 +64,7 @@ docker compose up --build
 
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+bash ./install.sh
 ```
 
 #### anaconda を使う場合
@@ -71,7 +72,7 @@ pip install -r requirements.txt
 
 conda create -n example_env python=3.11
 conda activate example_env
-pip install -r requirements.txt
+bash ./install.sh
 ```
 
 ---

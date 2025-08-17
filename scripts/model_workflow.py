@@ -90,14 +90,16 @@ class ModelWorkflow:
     def forward_fn(self) -> Callable:
         return TorchUtils.resolve_forward_fn(self._config["training"]["dataset"])
 
-    def setup_seed(self) -> None:
-        if self._seed:
-            self._generator = TorchUtils.setup_seed_with_generator(self._seed)
+    def setup_seed(self, seed_offset: int = 0) -> None:
+        self._seed += seed_offset
+        self._generator = TorchUtils.setup_seed_with_generator(self._seed)
 
     def init_dataloaders(self) -> None:
+        if self._generator is None:
+            raise ValueError("Generator is not initialized.")
         c = self._config
         datasets = DatasetComponent(
-            c["training"]["dataset"], c["dataset"][c["training"]["dataset"]], self._seed
+            c["training"]["dataset"], c["dataset"][c["training"]["dataset"]], self._generator
         ).datasets
         self._test_dataset = datasets[2]
         loaders = DataLoaderComponent(

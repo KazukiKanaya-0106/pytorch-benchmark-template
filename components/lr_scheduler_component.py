@@ -27,7 +27,6 @@ class LRSchedulerComponent:
                     T_max=lr_scheduler_config["T_max"],
                     eta_min=float(lr_scheduler_config["eta_min"]),
                     last_epoch=lr_scheduler_config["last_epoch"],
-                    verbose=True,
                 )
             case "step_lr":
                 return StepLR(
@@ -35,7 +34,6 @@ class LRSchedulerComponent:
                     step_size=lr_scheduler_config["step_size"],
                     gamma=lr_scheduler_config["gamma"],
                     last_epoch=lr_scheduler_config["last_epoch"],
-                    verbose=True,
                 )
             case "reduce_on_plateau":
                 return ReduceLROnPlateau(
@@ -43,7 +41,6 @@ class LRSchedulerComponent:
                     mode=mode,
                     factor=lr_scheduler_config["factor"],
                     patience=lr_scheduler_config["patience"],
-                    verbose=True,
                     min_lr=float(lr_scheduler_config["min_lr"]),
                 )
             case _:

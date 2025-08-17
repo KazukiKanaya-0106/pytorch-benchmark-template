@@ -9,7 +9,7 @@ class DataLoaderComponent:
         train_dataset: Dataset,
         valid_dataset: Dataset,
         test_dataset: Dataset,
-        generator: torch.Generator | None = None,
+        generator: torch.Generator,
     ):
         self._train_dataset = train_dataset
         self._valid_dataset = valid_dataset

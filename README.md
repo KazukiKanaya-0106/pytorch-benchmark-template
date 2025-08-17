@@ -169,45 +169,6 @@ tensorboard --logdir ./artifacts/tensorboard
 
 ---
 
-## 複数実験の一括実行（スケジュール機能）
-
-複数の設定を一括で実行したい場合は、以下のスクリプトを使用します。
-
-### 実行方法
-
-```bash
-bash schedule_run.sh
-```
-
-### スクリプト内容（`schedule_run.sh`）
-
-```bash
-#!/bin/bash
-
-while IFS= read -r line || [ -n "$line" ]; do
-  [[ -z "$line" || "$line" =~ ^# ]] && continue
-  python main.py $line || echo "[ERROR] Failed: $line" >&2
-done < schedule.txt
-```
-
-### スケジュールファイルの例（`schedule.txt`）
-
-```txt
--c configs/example.yml -k demo
--c configs/base.yml -k base
-```
-
-これは次のコマンドと等価です：
-
-```bash
-python main.py -c configs/example.yml -k demo
-python main.py -c configs/base.yml -k base
-```
-
-`schedule.txt`に複数行を記載し`schedule_run.sh`を実行すれば、順番に実行されます。
-
----
-
 ## 想定される活用例
 
 * 異なるモデル（MLP, CNNなど）の比較実験

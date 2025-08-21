@@ -99,7 +99,7 @@ class ModelWorkflow:
             raise ValueError("Generator is not initialized.")
         c = self._config
         datasets = DatasetComponent(
-            c["training"]["dataset"], c["dataset"][c["training"]["dataset"]], self._generator
+            c["training"]["dataset"], c["dataset"][c["training"]["dataset"]], self._generator, c["training"]["model"]
         ).datasets
         self._test_dataset = datasets[2]
         loaders = DataLoaderComponent(

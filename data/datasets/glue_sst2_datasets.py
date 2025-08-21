@@ -6,9 +6,9 @@ from typing import Any
 
 
 class GlueSST2Datasets:
-    def __init__(self, data_config: dict, generator: torch.Generator):
+    def __init__(self, data_config: dict, generator: torch.Generator, model_name: str):
         dataset = load_dataset("glue", "sst2")
-        tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+        tokenizer = BertTokenizer.from_pretrained(model_name)
 
         def tokenize_fn(example):
             return tokenizer(example["sentence"], padding="max_length", truncation=True, max_length=128)

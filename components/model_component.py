@@ -57,9 +57,13 @@ class ModelComponent:
                     classes=model_config["classes"],
                     activation=model_config["activation"],
                 )
-            case "bert":
+            case "bert-base-uncased":
                 model = BertForSequenceClassification.from_pretrained(
                     "bert-base-uncased", num_labels=model_config["num_labels"]
+                )
+            case "distilbert-base-uncased":
+                model = BertForSequenceClassification.from_pretrained(
+                    "distilbert-base-uncased", num_labels=model_config["num_labels"]
                 )
             case _:
                 raise ValueError(f"Unsupported model: {model_name}")

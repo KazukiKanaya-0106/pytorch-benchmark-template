@@ -1,0 +1,40 @@
+# メタデータの設定
+meta:
+  project: pytorch-benchmark-template
+  seed: 42
+  device: cuda
+  description: "benchmark on GLUE/SST-2"
+
+# 訓練の設定
+training:
+  dataset: sst2
+  weight: null
+  epochs: 5
+  model: distilbert-base-uncased
+  loss: cross_entropy_loss
+  optimizer: adam
+  lr_scheduler: null
+  early_stopping: false
+
+# 検証の設定
+evaluation:
+  metrics: [accuracy, f1]
+  save_best_monitor: accuracy
+  monitor_task: max
+
+optimizer:
+  adam:
+    learning_rate: 2e-5
+    weight_decay: 0.01
+
+dataset:
+  sst2:
+    downloads: data/downloads/
+    num_classes: 2
+
+    fraction: 0.01
+
+    loader:
+      batch_size: 16
+      num_workers: 1
+      shuffle_train: true

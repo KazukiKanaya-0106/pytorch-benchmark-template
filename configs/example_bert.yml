@@ -10,7 +10,7 @@ training:
   dataset: sst2
   weight: null
   epochs: 5
-  model: bert
+  model: bert-base-uncased
   loss: cross_entropy_loss
   optimizer: adam
   lr_scheduler: null

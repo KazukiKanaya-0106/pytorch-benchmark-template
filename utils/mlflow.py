@@ -42,8 +42,8 @@ class MLflow:
         else:
             print(f"[Warning] Artifact not found, skipping: {path}")
 
-    def log_model(self, model: Module, artifact_path: str = "model") -> None:
-        mlflow.pytorch.log_model(model, artifact_path)
+    def log_model(self, model: Module, name: str = "model") -> None:
+        mlflow.pytorch.log_model(model, name=name)
 
     def end_run(self) -> None:
         if self.active_run:

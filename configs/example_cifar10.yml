@@ -16,3 +16,23 @@ evaluation:
   metrics: [accuracy, f1]
   save_best_monitor: accuracy
   monitor_task: max
+
+metrics:
+  accuracy:
+    task: multiclass
+    average: macro
+  iou:
+    task: multiclass
+    average: macro
+  recall:
+    task: multiclass
+    average: macro
+  f1:
+    task: multiclass
+    average: macro
+  precision:
+    task: multiclass
+    average: macro
+  r2:
+    global_mode: true
+  relative_l2_error:

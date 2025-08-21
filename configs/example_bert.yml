@@ -38,3 +38,23 @@ dataset:
       batch_size: 16
       num_workers: 1
       shuffle_train: true
+
+metrics:
+  accuracy:
+    task: multiclass
+    average: macro
+  iou:
+    task: multiclass
+    average: macro
+  recall:
+    task: multiclass
+    average: macro
+  f1:
+    task: multiclass
+    average: macro
+  precision:
+    task: multiclass
+    average: macro
+  r2:
+    global_mode: true
+  relative_l2_error:
